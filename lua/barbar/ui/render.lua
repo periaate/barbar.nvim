@@ -285,7 +285,7 @@ local function get_bufferline_containers(data, bufnrs, refocus)
 
     --- The name of the buffer
     --- @type barbar.ui.node
-    local name = {hl = clickable .. buffer_hl, text = icons_option.filename and buffer_name or ''}
+    local name = {hl = clickable .. buffer_hl, text = fix(icons_option.filename and buffer_name or '')}
 
     --- The buffer index
     --- @type barbar.ui.node
