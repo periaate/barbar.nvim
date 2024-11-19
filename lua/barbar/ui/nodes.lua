@@ -79,7 +79,7 @@ function nodes.to_string(node_list)
 		--       tabline.
 		--       To escape '%', we make it '%%'. It just so happens that '%' is also a special character
 		--       in Lua, so we have write '%%' to mean '%'.
-		result = result .. node.hl .. fix(node.text):gsub('%%', '%%%%')
+		result = result .. node.hl .. node.text:gsub('%%', '%%%%')
 	end
 
 	return result
@@ -135,7 +135,7 @@ function nodes.insert_many(node_list, position, others)
 	local i = 1
 	while i <= #node_list do
 		local node = node_list[i]
-		local node_width = strwidth(fix(node.text))
+		local node_width = strwidth(node.text)
 
 		-- While we haven't found the position...
 		if current_position + node_width <= position then
@@ -150,7 +150,7 @@ function nodes.insert_many(node_list, position, others)
 			-- Slice current node if it `position` is inside it
 			if available_width > 0 then
 				table_insert(new_nodes, {
-					text = strcharpart(fix(node.text), 0, available_width),
+					text = strcharpart(node.text, 0, available_width),
 					hl = node.hl,
 				})
 			end
@@ -169,7 +169,7 @@ function nodes.insert_many(node_list, position, others)
 			-- table.insert(new_nodes, 'then')
 			while i <= #node_list do
 				local previous_node = node_list[i]
-				local previous_node_width = strwidth(previous_fix(node.text))
+				local previous_node_width = strwidth(previous_node.text)
 				local previous_node_start_position = current_position
 				local previous_node_end_position   = current_position + previous_node_width
 
@@ -182,7 +182,7 @@ function nodes.insert_many(node_list, position, others)
 					local remaining_width = previous_node_end_position - end_position
 					local start = previous_node_width - remaining_width
 					local end_  = previous_node_width
-					table_insert(new_nodes, { hl = previous_node.hl, text = strcharpart(previous_fix(node.text), start, end_) })
+					table_insert(new_nodes, { hl = previous_node.hl, text = strcharpart(previous_node.text, start, end_) })
 				end
 
 				i = i + 1
@@ -205,12 +205,12 @@ function nodes.slice_right(node_list, width)
 	local new_nodes = {}
 
 	for _, node in ipairs(node_list) do
-		local text_width = strwidth(fix(node.text))
+		local text_width = strwidth(node.text)
 		accumulated_width = accumulated_width + text_width
 
 		if accumulated_width >= width then
 			local diff = text_width - (accumulated_width - width)
-			table_insert(new_nodes, { hl = node.hl, text = strcharpart(fix(node.text), 0, diff) })
+			table_insert(new_nodes, { hl = node.hl, text = strcharpart(node.text, 0, diff) })
 			break
 		end
 
@@ -231,13 +231,13 @@ function nodes.slice_left(node_list, width)
 
 	for i = #node_list, 1, -1 do
 		local node = node_list[i] --- @type barbar.ui.node (it cannot be `nil`)
-		local text_width = strwidth(fix(node.text))
+		local text_width = strwidth(node.text)
 		accumulated_width = accumulated_width + text_width
 
 		if accumulated_width >= width then
 			local length = text_width - (accumulated_width - width)
 			local start = text_width - length
-			table_insert(new_nodes, 1, { hl = node.hl, text = strcharpart(fix(node.text), start, length) })
+			table_insert(new_nodes, 1, { hl = node.hl, text = strcharpart(node.text, start, length) })
 			break
 		end
 
