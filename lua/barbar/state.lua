@@ -7,11 +7,11 @@ local table_remove = table.remove
 
 local defer_fn = vim.defer_fn
 local vim_bufnr = vim.fn.bufnr --- @type function
-local buf_get_name = function(bufnr) fix(vim.api.nvim_buf_get_name(bufnr)) end --- @type function
+local buf_get_name = function(bufnr) fix(vim.api.nvim_buf_get_name()) end --- @type function
 local buf_get_option = vim.api.nvim_buf_get_option --- @type function
 local buf_is_loaded = vim.api.nvim_buf_is_loaded --- @type function
 local buf_is_valid = vim.api.nvim_buf_is_valid --- @type function
-local bufname = vim.fn.bufname --- @type function
+local bufname = function(bufnr) fix(vim.fn.bufname(bufnr)) end --- @type function
 local command = vim.api.nvim_command --- @type function
 local fnamemodify = vim.fn.fnamemodify --- @type function
 local get_current_buf = vim.api.nvim_get_current_buf --- @type function
