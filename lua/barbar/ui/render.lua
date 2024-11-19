@@ -2,6 +2,55 @@
 -- render.lua
 --
 
+
+function Split(input, sep)
+	local result = {}
+
+	if sep == "" then
+		for i = 1, #input do
+			table.insert(result, input:sub(i, i))
+		end
+		return result
+	end
+
+	local pattern = "(.-)" .. sep
+	local last_end = 1
+	local s, e, cap = input:find(pattern, 1)
+
+	while s do
+		if s ~= 1 or cap ~= "" then
+			table.insert(result, cap)
+		end
+		last_end = e + 1
+		s, e, cap = input:find(pattern, last_end)
+	end
+
+	if last_end <= #input then
+		table.insert(result, input:sub(last_end))
+	end
+
+	return result
+end
+
+function pop(array)
+    if #array == 0 then
+        return nil -- Return nil if the array is empty
+    end
+    local lastElement = array[#array] -- Get the last element
+    array[#array] = nil -- Remove the last element
+    return lastElement
+end
+
+
+function fix(s)
+	string.gsub(s, [[\]], "/")
+	sar = Split(s, "/")
+	s = pop(sar)
+	return s
+end
+
+
+
 local ceil = math.ceil
 local max = math.max
 local table_insert = table.insert
@@ -226,7 +275,7 @@ local function get_bufferline_containers(data, bufnrs, refocus)
     --- the suffix of some (eventually all) rendered highlight names
     local hl_suffix = (modified and 'Mod') or (pinned and 'Pin') or ''
 
-    local buffer_name = buffer_data.name or '[no name]'
+    local buffer_name = fix(buffer_data.name) or '[no name]'
     local buffer_hl = wrap_hl(hl_prefix .. hl_suffix)
 
     local icons_option = buffer.get_icons(activity_name, modified, pinned)
@@ -311,7 +360,7 @@ local function get_bufferline_containers(data, bufnrs, refocus)
     }
 
     --- @type barbar.ui.node
-    local padding = { hl = buffer_hl, text = pinned and pinned_pad_text or unpinned_pad_text }
+    local padding = { hl = buffer_hl, text = fix(pinned and pinned_pad_text or unpinned_pad_text) }
 
     local container = { --- @type barbar.ui.container
       nodes = { left_separator, padding, buffer_index, buffer_number, icon, jump_letter, name },
