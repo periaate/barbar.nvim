@@ -181,7 +181,7 @@ function buffer.format_name(name)
     end
   end
 
-  return fix(name)
+  return name
 end
 
 --- @param buffer_numbers integer[]
