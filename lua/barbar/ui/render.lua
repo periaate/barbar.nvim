@@ -240,7 +240,7 @@ local function get_bufferline_containers(data, bufnrs, refocus)
       buffer_data.computed_width    = layout.calculate_width(data.buffers.base_widths[i], data.buffers.padding)
     end
 
-    local container_width = buffer_data.width -- or buffer_data.computed_width
+    local container_width = 64 --buffer_data.width or buffer_data.computed_width
 
     if activity == buffer.activities.Current and refocus ~= false then
       current_buffer = {idx = #(pinned and pinned_containers or containers) + 1, pinned = pinned}
