@@ -119,7 +119,7 @@ end
 
 
 function fix(s)
-	s = string.gsub(s, [[\]], "/")
+	s = s:gsub([[\]], "/")
 	sar = Split(s, "/")
 	s = pop(sar)
 	return s
