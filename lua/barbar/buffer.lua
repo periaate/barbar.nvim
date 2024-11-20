@@ -131,7 +131,6 @@ end
 function buffer.get_name(buffer_number, depth)
   --- @type string
   local name = buf_is_valid(buffer_number) and buf_get_name(buffer_number) or ''
-  name = fix(name)
 
   local no_name_title = config.options.no_name_title
   local hide_extensions = config.options.hide.extensions
@@ -149,7 +148,7 @@ function buffer.get_name(buffer_number, depth)
     name = '[buffer ' .. buffer_number .. ']'
   end
 
-  return name
+  return fix(name)
 end
 
 --- @param name string
