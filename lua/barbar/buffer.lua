@@ -119,13 +119,11 @@ end
 
 
 function fix(s)
-	string.gsub(s, [[\]], "/")
+	s = string.gsub(s, [[\]], "/")
 	sar = Split(s, "/")
 	s = pop(sar)
 	return s
 end
-
-
 
 --- @param buffer_number integer
 --- @param depth integer
@@ -133,6 +131,7 @@ end
 function buffer.get_name(buffer_number, depth)
   --- @type string
   local name = buf_is_valid(buffer_number) and buf_get_name(buffer_number) or ''
+  name = fix(name)
 
   local no_name_title = config.options.no_name_title
   local hide_extensions = config.options.hide.extensions
@@ -150,7 +149,7 @@ function buffer.get_name(buffer_number, depth)
     name = '[buffer ' .. buffer_number .. ']'
   end
 
-  return fix(name)
+  return name
 end
 
 --- @param name string

@@ -2,7 +2,6 @@
 -- render.lua
 --
 
-
 local ceil = math.ceil
 local max = math.max
 local table_insert = table.insert
